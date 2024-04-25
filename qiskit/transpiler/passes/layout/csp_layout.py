@@ -15,13 +15,13 @@ Constraint Satisfaction Problem. It tries to find a solution that fully
 satisfy the circuit, i.e. no further swap is needed. If no solution is
 found, no ``property_set['layout']`` is set.
 """
-import random
 
 from qiskit.transpiler.layout import Layout
 from qiskit.transpiler.basepasses import AnalysisPass
 from qiskit.transpiler.exceptions import TranspilerError
 from qiskit.utils import optionals as _optionals
 from qiskit.transpiler.target import Target
+import secrets
 
 
 @_optionals.HAS_CONSTRAINT.require_in_instance
@@ -95,7 +95,7 @@ class CSPLayout(AnalysisPass):
 
         variables = list(range(len(qubits)))
         variable_domains = list(self.coupling_map.physical_qubits)
-        random.Random(self.seed).shuffle(variable_domains)
+        secrets.SystemRandom().Random(self.seed).shuffle(variable_domains)
 
         problem = Problem(solver)
         problem.addVariables(variables, variable_domains)
